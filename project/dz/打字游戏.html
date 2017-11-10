@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>打字游戏</title>
+</head>
+	<style>
+	html,body{
+		height: 100%;
+		overflow: hidden;
+		margin:0;
+	}
+		body{
+			background-image: url(images/dzbz.jpg);
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		.container{
+			width: 1200px;
+			height: 100%;
+			margin:0 auto;
+
+		}
+		.scene{
+
+			width: 1000px;
+			height: 100%;
+			/*background-color:black;*/
+			float: left;
+			position: relative;
+		}
+		.control{
+			width: 200px;
+			height:600px;
+			/* background-color:blue; */
+			float: left;
+			text-align: center;
+			background-color:rgba(40,75,112,0.6);
+			/*background-color: skyblue;*/
+
+		}
+		.letter{
+			width: 100px;
+			height: 100px;
+			border-radius: 35px 25px 15px 45px;
+			background-size:contain;
+			background-repeat: no-repeat;
+			line-height: 100px;
+			font-size: 40px;
+			color: gold;
+			text-align: center;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+		div{
+			font-size: 20px;
+			margin-top: 40px;
+			color: lawngreen;
+		}
+		button{
+			display: block;
+			margin: 0 auto;
+			margin-top: 15px;
+			width: 100px;
+			height: 40px;
+			border-radius: 20px;
+			cursor: pointer;
+			outline: none;
+			background-color: cornflowerblue;
+		}
+	</style>
+<body>
+	<div class="container">
+		<div class="scene">
+		</div>	
+		<div class="control">
+			<div>得分</div>
+	        <div class="scor">0</div>
+	        <div>关卡</div>
+	        <div class="state">1</div>
+	        <div>生命</div>
+	        <div class="life">5</div>
+	        <button class="start">开始</button>
+	        <button class="pause">暂停</button>
+	        <button class="over">结束</button>
+		</div>
+		
+	</div>
+</body>
+<script>
+	let scor=document.querySelector(".scor")
+	let sc=0
+	let flag=true;
+	let obj={};
+	let state=document.querySelector(".state");
+	let gk=1;
+	let scene = document.querySelector(".scene");
+	let start=document.querySelector(".start");
+	let pause=document.querySelector(".pause");
+	function creatLetter(){
+		let newdiv=document.createElement("div");
+		do{
+		var randomNum =	Math.floor( Math.random()*26+65);
+			
+		var randomLetter=String.fromCharCode(randomNum);
+	}while(obj[randomLetter])
+		newdiv.style.backgroundImage="url(images/"+randomLetter+".png)"
+		do{
+			var randomLeft=Math.floor( Math.random()*900);
+		}while(checkLeft(randomLeft));	
+			newdiv.style.left=randomLeft+"px";
+			let randomTop=Math.floor(Math.random()*-100)-200;
+			newdiv.style.top=randomTop+"px";
+		newdiv.className="letter";
+		scene.appendChild(newdiv);
+		obj[randomLetter]={left:randomLeft,top:randomTop,ele:newdiv};
+		console.log(obj)
+	}
+
+	function checkLeft(newleft){
+		for(let i in obj){
+			if (newleft>obj[i].left-100&&newleft<obj[i].left+100) {
+				return true;
+			}
+		}
+	}
+	for (var i = 0; i <3; i++) {
+		creatLetter()
+	}
+	// setInterval(function(){
+	// 	for(let i in obj){
+	// 		let t=obj[i].top;
+	// 		t+=5
+	// 		obj[i].ele.style.top=t+"px"
+	// 		obj[i].top=t
+	// 	}
+	// },50)
+	document.onkeydown=function(e){
+		let kc=e.keyCode;
+		let letter=String.fromCharCode(kc)
+		if (obj[letter]) {
+			scene.removeChild(obj[letter].ele)
+			delete obj[letter];
+			creatLetter();
+			sc++;
+			if (sc%10===0) {
+				gk++;
+				
+			}
+			scor.innerHTML=sc;
+			state.innerHTML=gk
+		}
+	}
+	start.onclick=function(){
+		if (flag) {
+			zt=setInterval(function(){
+				for(let i in obj){
+					let t=obj[i].top;
+					t+=5;
+					obj[i].ele.style.top=t+"px"
+					obj[i].top=t;
+					if (obj[i].top>window.innerHeight) {
+						scene.removeChild(obj[i].ele)
+						delete obj[i];
+						creatLetter();
+					}
+				}
+			},50);
+		}
+		flag=false;
+
+	}
+	let kg=true;
+	pause.onclick=function(){
+		pause.innerHTML="继续"
+		if (kg) {
+			clearInterval(zt);
+			kg=false;
+
+			console.log(kg)
+		}else{
+		pause.innerHTML="暂停"
+			kg=true;
+			zt=setInterval(function(){
+				for(let i in obj){
+					let t=obj[i].top;
+					t+=5;
+					obj[i].ele.style.top=t+"px"
+					obj[i].top=t;
+					if (obj[i].top>window.innerHeight) {
+						scene.removeChild(obj[i].ele)
+						delete obj[i];
+						creatLetter();
+					}
+				}
+			},50);
+		}
+	}
+	
+
+
+	// --------------第二种方式
+	/*面向对象编程 
+		*以构造一个对象的形式来完成一个完整程序的编写
+		*把写一个完整程序的过程通过封装一个对象来完成,通过添加对象的属性和方法完成程序的编写
+		*分析对象有哪些特性,添加对应的属性,分析对象有哪些行为,添加对应的方法
+		*创建一个游戏类class game() 
+		添加游戏所需要的属性和方法
+		*优点
+			*将程序所需要的细节信息隐藏起来,只留部分供外部调用,提高程序安全性和易用性
+			*整个程序结构会非常清晰
+		*缺点
+			*需要对于程序的全部细节有全局的把握	
+
+
+
+
+
+	
+	*面向过程编程
+	  *把写一个完整程序的过程根据功能分割成不同的阶段,编程时候一个阶段一个阶段完成
+	  *碰到一个需求>写一段程序>辖一二个需求>下一段程序
+		*优点
+			*只需要专注于当前阶段的编写不需要考虑对整体的影响
+			*思路简单清晰
+		*缺点
+			*如果程序代码量比较大 对于程序的管理来说会非常麻烦
+			*以函数方式定义会占用比较多的内存
+			尤其是在复用比较多的时候
+		*应用场合
+			*在一些比较简单,不需要太多复用的时候
+// */
+// 			function game(){
+// 				方法(){
+
+// 				}
+// 			}
+ 		
+</script>
+</html>

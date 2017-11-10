@@ -1,0 +1,99 @@
+body{
+    width: 100%;
+    height: 100%;
+   background-image: url(12345.png);
+    background-size: cover;
+    margin: 0;
+    overflow: hidden;
+    background-repeat: no-repeat;
+
+}
+html{
+    width: 100%;
+    height: 100%;
+}
+.control{
+    background-color:rgba(255,255,255,0.5);
+    position: fixed;
+    right:200px;
+    top: 200px;
+    display: block;
+}
+.radiobox{
+    font-size: 20px;
+    margin-top: 50px;
+    color:gray;
+}
+.radiobox:nth-child(3){
+    margin-top: 30px;
+}
+#restart{
+    font-size: 18px;
+    display: block;
+    width: 100px;
+    height:50px;
+    background-color:rgba(0,0,0,0.5);
+    color: #f1f1f1;
+    border: 0;
+    text-decoration: none;
+    list-style: none;
+    margin-top: 50px;
+}
+#start{
+    font-size: 18px;
+    display: block;
+    width: 100px;
+    height:50px;
+    background-color:rgba(0,0,0,0.5);
+    color: #f1f1f1;
+    border: 0;
+    text-decoration: none;
+    list-style: none;
+}
+.container{
+    width: 600px;
+    height: 600px;
+    position:fixed;
+    left: 0;
+    right: 0;
+    top:0;
+    bottom: 0;
+    margin: auto;
+    background: rgba(25,25,112,0.4);
+    display: none;
+}
+@keyframes show {
+    0%{
+    transform: scale(0.1,0.1);
+    }
+    100%{
+    transform: scale(1,1);
+    }
+}
+.show{
+    display: block;
+    animation: show 1.5s linear ;
+}
+.zz{
+    width: 100%;
+    height:100%;
+    z-index: 999;
+    background-image: url(123.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: none;
+    position: relative;
+}
+.zz h2{
+    font-size:50px;
+    text-align:center;
+    line-height:300px;
+    margin: 0;
+}
+.xz{
+    display: block;
+    width: 200px;
+    height: 100px;
+    background-color: skyblue;
+    margin-top: 100px;
+}    
